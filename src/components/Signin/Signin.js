@@ -30,9 +30,10 @@ class Signin extends React.Component{
             if (user.id) {
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
+            } else {
+                console.log('wrong credentials')
             }
         })
-        .catch(err => console.log('wrong credentials'));
     }
 
     render() {
