@@ -39,7 +39,7 @@ class Register extends React.Component{
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
             } else {
-                console.log('unable to register')
+                alert('Unable to register, try another name and email');
             }
         })
     }
