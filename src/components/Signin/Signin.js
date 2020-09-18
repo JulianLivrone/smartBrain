@@ -5,7 +5,8 @@ class Signin extends React.Component{
         super(props);
         this.state = {
             signInEmail: '',
-            signInPassword: ''
+            signInPassword: '',
+            tryAgainText: ''
         }
     }
     onEmailChange = (event) => {
@@ -16,8 +17,13 @@ class Signin extends React.Component{
         this.setState({signInPassword: event.target.value});
     }
 
+    changeTryAgainText = () => {
+        this.setState({tryAgainText: 'Wrong credentials, try again.'})
+    }
+
     onSubmitSignIn = () => {
-        fetch('https://frozen-stream-37321.herokuapp.com/signin', {
+        //fetch('https://frozen-stream-37321.herokuapp.com/signin', { for deployment to Heroku
+        fetch('http://localhost:3000/signin', { //for local development
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -31,7 +37,7 @@ class Signin extends React.Component{
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
             } else {
-                alert('Wrong credentials, try again');
+                this.changeTryAgainText();
             }
         })
     }
@@ -63,6 +69,9 @@ class Signin extends React.Component{
                                 id="password"
                                 onChange={this.onPasswordChange}
                             />
+                        </div>
+                        <div className="mv3">
+                            <label className="db fw6 lh-copy f6" htmlFor="password">{this.state.tryAgainText}</label>
                         </div>
                         </fieldset>
                         <div className="">

@@ -75,7 +75,8 @@ class App extends React.Component {
 
   onButtonSubmit = () => {
    this.setState({imageUrl: this.state.input});
-        fetch('https://frozen-stream-37321.herokuapp.com/imageurl', {
+        //fetch('https://frozen-stream-37321.herokuapp.com/imageurl', { for deployment to Heroku
+        fetch('http://localhost:3000/imageurl', { //for local development
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -84,8 +85,9 @@ class App extends React.Component {
         })
         .then(response => response.json())
         .then(response => {
-          if (response) {
-            fetch('https://frozen-stream-37321.herokuapp.com/image', {
+          if (response.outputs[0].data.regions[0].region_info.bounding_box) { //this condition is like this so that the entries only increment if it detecs a face
+            //fetch('https://frozen-stream-37321.herokuapp.com/image', { for deployment to Heroku
+            fetch('http://localhost:3000/image', { //for local development
               method: 'put',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
@@ -101,6 +103,7 @@ class App extends React.Component {
           this.displayFaceBox(this.calculateFaceLocation(response));
         })
         .catch(err => console.log(err));
+        
   }
 
   onRouteChange = (route) => {
@@ -131,9 +134,9 @@ class App extends React.Component {
                 <FaceRecognition imageUrl={imageUrl} box={box} />
               </div>
             : (
-              route === 'signin'
-              ? <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
-              : <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
+              route === 'register'
+              ? <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
+              : <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
             )
           } 
       </div>

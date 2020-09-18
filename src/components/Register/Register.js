@@ -6,7 +6,8 @@ class Register extends React.Component{
         this.state = {
             email: '',
             password: '',
-            name: ''
+            name: '',
+            tryAgainText: ''
         }
     }
 
@@ -22,8 +23,13 @@ class Register extends React.Component{
         this.setState({password: event.target.value});
     }
 
+    changeTryAgainText = () => {
+        this.setState({tryAgainText: 'Unable to register, try another email'})
+    }
+
     onSubmitSignIn = () => {
-        fetch('https://frozen-stream-37321.herokuapp.com/register', {
+        //fetch('https://frozen-stream-37321.herokuapp.com/register', { for deployment to Heroku
+        fetch('http://localhost:3000/register', { //for local development
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -39,7 +45,7 @@ class Register extends React.Component{
                 this.props.loadUser(user);
                 this.props.onRouteChange('home');
             } else {
-                alert('Unable to register, try another name and email');
+                this.changeTryAgainText();
             }
         })
     }
@@ -80,6 +86,9 @@ class Register extends React.Component{
                                 id="password"
                                 onChange={this.onPasswordChange}
                             />
+                        </div>
+                        <div className="mv3">
+                            <label className="db fw6 lh-copy f6" htmlFor="password">{this.state.tryAgainText}</label>
                         </div>
                         </fieldset>
                         <div className="">
